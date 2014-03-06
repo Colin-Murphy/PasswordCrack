@@ -97,7 +97,7 @@ public class PasswordCrack {
 		//Let the dictionary know how many hashes to expect
 		dictionary.setCount(passwords.size());
 		
-		//Arraylist of user threads
+		//Arraylist of group2 threads
 		ArrayList<Thread> group2 = new ArrayList<Thread>();
 		//Parse input and start thread group 2 (users)
 		try {
@@ -127,7 +127,7 @@ public class PasswordCrack {
 			System.exit (1);
 		}
 		
-		//Arraylist of the hashers threads
+		//Arraylist of the group 1 threads
 		ArrayList<Thread> group1 = new ArrayList<Thread>();
 		for (String password:passwords) {
 			Thread t = new Thread(new Group1Thread(password, 
@@ -147,4 +147,4 @@ public class PasswordCrack {
 		
 
 	}//End of constructor
-}
+}//End of PasswordCrack
