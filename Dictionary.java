@@ -1,9 +1,21 @@
+//Backed by a hashmap
+import java.util.*;
+import edu.rit.util.Hex;
+
 public class Dictionary {
+
+	//Hashmap backend
+	private HashMap<String, String> map;
+	//The number of items to be added
+	private int finalCount = 0;
+
+
 	/**
 	 * Construct a new dictionary.
 	 */
 	public Dictionary() {
-		TBD
+		 map = new HashMap<String, String>();
+
 	}
 
 	/**
@@ -12,7 +24,8 @@ public class Dictionary {
 	 * @param  count  Total number of passwords.
 	 */
 	public synchronized void setCount(int count) {
-		TBD
+		finalCount = count;
+		
 	}
 
 	/**
@@ -22,7 +35,10 @@ public class Dictionary {
 	 * @param  digest	 Password digest.
 	 */
 	public synchronized void add(String password, byte[] digest) {
-		TBD
+		String hex = Hex.toString(digest);
+		map.put(hex, password);
+		notifyAll();
+		
 	}
 
 	/**
@@ -38,6 +54,18 @@ public class Dictionary {
 	 */
 	public synchronized String get (byte[] digest)
 		throws InterruptedException {
-		TBD
+		
+		String hex = Hex.toString(digest);
+		while(map.size() < finalCount && !map.containsKey(hex)) {
+			wait();
+		}
+		
+		//Print the password if it was found
+		if (map.containsKey(hex)) {
+			return map.get(hex);
+		}
+		//Not found, return null
+		return null;
+	
 	}
 }
