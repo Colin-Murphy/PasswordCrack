@@ -1,4 +1,14 @@
 /**
+	File: Turn.java	
+	Designed for RIT Concepts of Paralel and Distributed Systems Project 1
+	
+	@author Colin L Murphy <clm3888@rit.edu>
+	@version 3/5/14
+*/
+
+
+
+/**
  * Class Turn provides an object that makes multiple threads take turns.
  */
  
@@ -20,6 +30,7 @@ public class Turn {
 	 */
 	public synchronized void waitForTurn(int id) 
 		throws InterruptedException {
+		//Wait until calling threads id gets its turn to print
 		while (id != index) {
 			wait();
 		}
@@ -31,7 +42,9 @@ public class Turn {
 	 * Let the next thread take its turn.
 	 */
 	public synchronized void nextTurn() {
+		//Allow the next thread to print
 		index++;
+		//Alert all the threads that it might be their turn
 		notifyAll();
 
 	}

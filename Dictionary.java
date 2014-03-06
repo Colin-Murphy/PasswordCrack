@@ -1,5 +1,16 @@
+/**
+	File: Dictionary.java	
+	Designed for RIT Concepts of Paralel and Distributed Systems Project 1
+	
+	@author Colin L Murphy <clm3888@rit.edu>
+	@version 3/5/14
+*/
+
+
 //Backed by a hashmap
 import java.util.*;
+
+//Rit Hex Library
 import edu.rit.util.Hex;
 
 public class Dictionary {
@@ -56,6 +67,7 @@ public class Dictionary {
 		throws InterruptedException {
 		
 		String hex = Hex.toString(digest);
+		//Wait until the password is found, or all hashes are done
 		while(map.size() < finalCount && !map.containsKey(hex)) {
 			wait();
 		}

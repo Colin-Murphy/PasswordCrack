@@ -1,3 +1,12 @@
+/**
+	File: PasswordCrack.java	
+	Designed for RIT Concepts of Paralel and Distributed Systems Project 1
+	
+	@author Colin L Murphy <clm3888@rit.edu>
+	@version 3/5/14
+*/
+
+
 //Read files
 import java.io.File;
 //Arraylist for storing users and hashed passwords
@@ -24,8 +33,8 @@ public class PasswordCrack {
 	public static void main(String[] args) throws Exception {
 		//Insure proper amount of arguments
 		if (args.length != 2) {
-			System.err.println("Usage: java PasswordCrack <dictionaryFile> " + 
-				"<databaseFile>");
+			System.err.println("Usage: java PasswordCrack" 
+				+ " <dictionaryFile> " + "<databaseFile>");
 			//Were done here
 			return;
 		}
@@ -59,9 +68,10 @@ public class PasswordCrack {
 			}
 		}
 		
-		//Something went wrong reading the file, tell the user and give up
+		//Something went wrong, give up.
 		catch(IOException e) {
-			System.err.println("Error reading " + dictionaryFile.getName());
+			System.err.println("Error reading " + 
+				dictionaryFile.getName());
 			System.exit (1);
 		}
 		
@@ -84,6 +94,7 @@ public class PasswordCrack {
 		Turn turn = new Turn();
 		//Dictionary for storing the hashes
 		Dictionary dictionary  = new Dictionary();
+		//Let the dictionary know how many hashes to expect
 		dictionary.setCount(passwords.size());
 		
 		//Arraylist of user threads
@@ -96,7 +107,9 @@ public class PasswordCrack {
 				//Split into tokens at any whitespace
 				String[] tokens = line.split("\\s+");
 				//Create and run a new thread
-				Thread t = new Thread(new Group2Thread(i, tokens[0],tokens[1], dictionary, turn));
+				Thread t = new Thread(new Group2Thread(i, 
+					tokens[0],tokens[1], 
+					dictionary, turn));
 				//Start the thread
 				t.start();
 				//Add the thread to the group
@@ -107,21 +120,23 @@ public class PasswordCrack {
 			}
 		}
 		
-		//Something went wrong reading the file, tell the user and give up
+		//Sopmething went wrong, give up
 		catch(IOException e) {
-			System.err.println("Error reading " + databaseFile.getName());
+			System.err.println("Error reading " + 
+				databaseFile.getName());
 			System.exit (1);
 		}
 		
 		//Arraylist of the hashers threads
 		ArrayList<Thread> group1 = new ArrayList<Thread>();
 		for (String password:passwords) {
-			Thread t = new Thread(new Group1Thread(password, dictionary));
+			Thread t = new Thread(new Group1Thread(password, 
+				dictionary));
 			t.start();
 			group1.add(t);
 		}
 		
-		//Join all the threads, no further actions may be done in this thread per requirements
+		//Join all the threads
 		for (Thread t: group2) {
 			t.join();
 		}
@@ -131,5 +146,5 @@ public class PasswordCrack {
 		}
 		
 
-	}
+	}//End of constructor
 }

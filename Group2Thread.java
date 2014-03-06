@@ -1,4 +1,13 @@
 /**
+	File: Group2Thread.java	
+	Designed for RIT Concepts of Paralel and Distributed Systems Project 1
+	
+	@author Colin L Murphy <clm3888@rit.edu>
+	@version 3/5/14
+*/
+
+
+/**
  * Class Group2Thread provides a thread that searches for a password hash in the
  * dictionary.
  */
@@ -34,6 +43,7 @@ public class Group2Thread extends Thread {
 	public Group2Thread(int id, String user, String digestHex,
 		 Dictionary dictionary, Turn turn) {
 		 
+		 //Store all parameters
 		 this.id = id;
 		 this.user = user;
 		 this.digestHex = digestHex;
@@ -48,18 +58,21 @@ public class Group2Thread extends Thread {
 	public void run() {
 		try {
 
-			String plainText = dictionary.get(Hex.toByteArray(digestHex));
+			//Check the dictionary for the plain text password
+			String plainText = 
+				dictionary.get(Hex.toByteArray(digestHex));
+			//Wait for this threads turn to print
 			turn.waitForTurn(id);
+			//It was found!, print it
 			if (plainText != null) {
 				System.out.println(user + " " +  plainText);
 			}
+			//Let the next thread print
 			turn.nextTurn();
 		}
 		
 		//Not responsible for handling interrupts
 		catch( InterruptedException e) {};
-		
-		
 
 	}
 }
